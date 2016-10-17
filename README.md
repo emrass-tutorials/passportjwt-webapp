@@ -12,7 +12,11 @@ It includes:
 
 ### Setup the Volumes
 
-TODO: create external volumes
+```shell
+docker volume create --name passportjwtwebapp_mongo_config
+docker volume create --name passportjwtwebapp_mongo_data
+docker volume create --name passportjwtwebapp_node_modules
+```
 
 ### Rebuild the Image
 
