@@ -1,0 +1,47 @@
+# Run docker-compose build
+# Run docker-compose up
+
+version: '2'
+
+services:
+  node:
+    container_name: node-jwtdemo
+    image: local/node-jwtdemo
+    build:
+      context: .
+      dockerfile: .docker/node-jwtdemo.dockerfile
+    volumes:
+      - ./server:/var/www/node-jwtdemo
+      - node_modules:/var/www/node-jwtdemo/node_modules
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    networks:
+      - nodeapp-network
+
+  # No authentication is provided here - just a demo! Read the Dockerfile
+  # for more information about adding authentication.
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - nodeapp-network
+
+volumes:
+  node_modules:
+    external:
+      name: passportjwtwebapp_node_modules
+  mongo_data:
+    external:
+      name: passportjwtwebapp_mongo_data
+  mongo_config:
+    external:
+      name: passportjwtwebapp_mongo_config
+
+networks:
+  nodeapp-network:
+    driver: bridge
