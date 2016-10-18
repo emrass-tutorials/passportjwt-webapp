@@ -4,11 +4,15 @@ const router = require('./router');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const config = require('./config/main');
+const socketEvents = require('./socketEvents');
 
 const app = express();
 mongoose.connect(config.database);
 const server = app.listen(config.port);
 console.log('Your server is running on port ' + config.port + '.');
+
+const io = require('socket.io').listen(server);
+socketEvents(io);
 
 // Setting up basic middleware for all Express requests
 app.use(logger('dev')); // Log requests to API using morgan
